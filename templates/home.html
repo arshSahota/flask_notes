@@ -2,24 +2,23 @@
 <html>
 <body>
 
-    <h1>Hero Creator</h1>
+    <h1>Hero Title Generator</h1>
 
     <form method="POST">
-
         <input
             type="text"
             name="hero_name"
-            placeholder="Enter hero name"
+            placeholder="Enter name here"
+            required
         >
 
-        <button>Create Hero</button>
-
+        <button type="submit">Generate Title</button>
     </form>
 
-    {% if hero_name %}
-
-        <h2>Welcome {{ hero_name }}</h2>
-
+    {% if hero_name == "Arshdeep" %}
+        <h2>Legendary Hero Arshdeep</h2>
+    {% elif hero_name %}
+        <h2>Welcome Hero {{ hero_name }}</h2>
     {% endif %}
 
 </body>
