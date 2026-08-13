@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+    <h1>Hero Creator</h1>
+
+    <form method="POST">
+
+        <input
+            type="text"
+            name="hero_name"
+            placeholder="Enter hero name"
+        >
+
+        <button>Create Hero</button>
+
+    </form>
+
+    {% if hero_name %}
+
+        <h2>Welcome {{ hero_name }}</h2>
+
+    {% endif %}
+
+</body>
+</html>
