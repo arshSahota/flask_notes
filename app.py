@@ -1,19 +1,21 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/")
 def home():
-    hero_name = None
+    return render_template("home.html")
 
-    if request.method == "POST":
-        hero_name = request.form.get("hero_name")
 
-    return render_template(
-        "home.html",
-        hero_name=hero_name
-    )
+@app.route("/heroes")
+def heroes():
+    return render_template("heroes.html")
+
+
+@app.route("/quests")
+def quests():
+    return render_template("quests.html")
 
 
 if __name__ == "__main__":
