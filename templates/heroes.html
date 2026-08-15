@@ -2,6 +2,12 @@
 
 {% block content %}
 
-<h1>Heroes Page</h1>
+<h2>Heros</h2>
+
+{% for hero in heroes %}
+
+    <p>{{ hero }}</p>
+
+{% endfor %}
 
 {% endblock %}
