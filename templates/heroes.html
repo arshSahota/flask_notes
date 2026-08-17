@@ -1,13 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
+<h1>Hero Creator</h1>
 
-<h2>Heros</h2>
+<form method = "POST">
+    <input
+    type="text"
+    name="hero_name"
+    placeholder = "Enter hero name"
+    required
+    >
 
-{% for hero in heroes %}
+    <button type="submit">Create Hero</button>
+</form>
 
-    <p>{{ hero }}</p>
-
-{% endfor %}
-
+<h2>Saved Heroes</h2>
+{% if heroes %}
+    {% for hero in heroes %}
+        <p>{{ hero.id }}:{{ hero.name }}</p>
+    {% endfor %}
+{% else %}
+    <p>No Heroes Have been Created</p>
+{% endif %}
 {% endblock %}

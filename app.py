@@ -1,39 +1,67 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///heroes.db"
 
-@app.route("/", methods = ["POST", "GET"])
-def home():
+db = SQLAlchemy(app)
 
-    hero_name = None
+class Hero(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(100), nullable = False )
 
-    if request.method == "POST":
+with app.app_context():
+    db.create_all()
 
-        hero_name = request.form["hero_name"]
+    """
+    This tells SQLAlchemy to create any tables described by your models"""
 
-    return render_template("hero_creator.html", hero_name=hero_name)
+@app.route("/", methods = ["GET", "POST"])
 
-@app.route("/heroes")
 def heroes():
+    if request.method == "POST":
+        hero_name = request.form.get("hero_name")
 
-    heroes = [
-        "Arshdeep",
-        "Luna",
-        "Shadow"
-    ]
+        if hero_name:
+            new_hero = Hero(name=hero_name)
 
-    return render_template("heroes.html", heroes=heroes)
+            db.session.add(new_hero)
+            db.session.commit()
 
+            return redirect(url_for("heroes"))
 
-@app.route("/quests")
-def quests():
-    return render_template("quests.html")
+        """
+        redirect sends the user to another route
+        go to heroes page
+        instead of redirect("/")
+        Flask developers usually write 
+        redirect(url_for("heroes")) ==> because thats the function name
+        Flask finds the url automatically and this is safer when URL changes later
+        """
 
-@app.route("/something")
-def something():
-    return render_template("something.html")
+    all_heroes = Hero.query.all()
 
+    return render_template(
+        "heroes.html",
+        heroes=all_heroes
+                )
+
+"""
+what happens when the form is submitted??
+Ans: so HTML input is read
+a new Hero Python object is created
+db.session.add(new_hero) prepares it for insertion
+db.session.commit() --> permanenty saves it
+
+all_heroes = Hero.query.all()
+Finally, the list is sent to the template
+"""
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+"""
+usual pattern
+
+POST ==> SAVE DATA ==> REDIRECT ==> GET"""
